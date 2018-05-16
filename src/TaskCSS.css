@@ -1,0 +1,22 @@
+.container {
+    display: flex;
+    flex-direction:row;
+    height: auto;
+    border-style: solid;
+    margin: 6px;
+    border-color: lightcoral;
+}
+
+.delButton {
+    width: 5%;
+    background-color: white;
+    border-style: solid;
+    border-color: lightcoral;
+
+    margin: -2px;
+}
+
+.taskText
+{
+    margin: 10px;
+}

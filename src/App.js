@@ -2,54 +2,70 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import TodoList from './ToDoList'
+import ComponentRow from './TaskComponent'
 
 class App extends Component {
     constructor(props) {
         super(props);
-        this.state = { items: [], text: '' };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.state = {
+            items: []
+        };
+        this.myInput = React.createRef();
+    }
+
+    dellItem = (idToDel) =>
+    {
+         var buferItems = this.state.items;
+
+         for (var i = 0; i < buferItems.length; i++ ) {
+             if (buferItems[i].id === idToDel) {
+                 buferItems.splice(i, 1);
+                 break;
+             }
+         }
+         this.setState({ items: buferItems });
+    }
+
+    // handleChange(e) {
+    //     this.setState({ text: e.target.value });
+    // }
+
+    addTask = () => {
+        console.log(this.myInput.current.value);
+
+
+
+
+        const newItem = {
+            text: this.myInput.current.value,
+            id: Date.now()
+         };
+
+
+        this.setState(prevState => ({
+           items: this.items = this.state.items.concat(newItem)
+        }));
+        console.log(this.state.items);
     }
 
     render() {
+        console.log("render")
         return (
+
             <div>
-                <h3>TODO</h3>
-                <TodoList items={this.state.items} />
-                <form onSubmit={this.handleSubmit}>
-                    <label htmlFor="new-todo">
-                        What needs to be done?
-                    </label>
-                    <input
-                        id="new-todo"
-                        onChange={this.handleChange}
-                        value={this.state.text}
-                    />
-                    <button>
-                        Add #{this.state.items.length + 1}
-                    </button>
-                </form>
+
+                <div>
+                    {
+                    this.state.items.map((item, index) => (
+
+                        <ComponentRow key={index} itemId = {item.id} itemText = {item.text} dellItemCallBack = {this.dellItem}> </ComponentRow>
+                    ))
+                    }
+                </div>
+                <input type="text" ref={this.myInput} />
+                <button onClick={this.addTask}>AddTask</button>
             </div>
         );
-    }
-
-    handleChange(e) {
-        this.setState({ text: e.target.value });
-    }
-
-    handleSubmit(e) {
-        e.preventDefault();
-        if (!this.state.text.length) {
-            return;
-        }
-        const newItem = {
-            text: this.state.text,
-            id: Date.now()
-        };
-        this.setState(prevState => ({
-            items: prevState.items.concat(newItem),
-            text: ''
-        }));
     }
 }
 
