@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import TodoList from './ToDoList'
-import ComponentRow from './TaskComponent'
+import './TaskCSS.css'
+
 
 class App extends Component {
     constructor(props) {
@@ -13,22 +12,6 @@ class App extends Component {
         this.myInput = React.createRef();
     }
 
-    dellItem = (idToDel) =>
-    {
-         var buferItems = this.state.items;
-
-         for (var i = 0; i < buferItems.length; i++ ) {
-             if (buferItems[i].id === idToDel) {
-                 buferItems.splice(i, 1);
-                 break;
-             }
-         }
-         this.setState({ items: buferItems });
-    }
-
-    // handleChange(e) {
-    //     this.setState({ text: e.target.value });
-    // }
 
     addTask = () => {
         console.log(this.myInput.current.value);
@@ -48,17 +31,54 @@ class App extends Component {
         console.log(this.state.items);
     }
 
+    delBtnClick = (idToDel) =>
+    {
+        return function dellItem()
+        {
+            var buferItems = this.state.items;
+
+            for (var i = 0; i < buferItems.length; i++ ) {
+                if (buferItems[i].id === idToDel) {
+                    buferItems.splice(i, 1);
+                    break;
+                }
+            }
+            this.setState({ items: buferItems });
+        }.bind(this);
+    }
+
+    styleDecor = (event) => {
+        console.log(event.target);
+        if(event.target.style.textDecoration == '')
+        {
+            event.target.style.textDecoration = 'line-through';
+        }
+        else
+        {
+            event.target.style.textDecoration = '';
+        }
+    }
+
     render() {
         console.log("render")
         return (
 
             <div>
+                <h1>
+                    ToDoList
+                </h1>
 
+                <h3>
+                    Needs to be done:
+                </h3>
                 <div>
                     {
                     this.state.items.map((item, index) => (
 
-                        <ComponentRow key={index} itemId = {item.id} itemText = {item.text} dellItemCallBack = {this.dellItem}> </ComponentRow>
+                        <div className="container">
+                            <button className="delButton" onClick={this.delBtnClick(item.id)}>X</button>
+                            <p className="taskText" onClick={this.styleDecor}>{item.text}</p>
+                        </div>
                     ))
                     }
                 </div>

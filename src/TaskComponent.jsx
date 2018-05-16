@@ -11,12 +11,12 @@ export default class ToDoList extends Component {
 
     delBtnClick = () =>
     {
-        this.dellItemCallBack(this.itemId);
+        this.dellItemCallBack(this.itemId)();
     }
 
     render()
     {
-        debugger
+
         return(
             <div className="container" color = "black">
 
